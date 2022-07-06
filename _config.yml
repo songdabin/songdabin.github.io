@@ -30,6 +30,7 @@ twitter_username: jekyllrb
 github_username:  jekyll
 
 # Build settings
+asset_url: /assets
 theme: minima
 plugins:
   - jekyll-feed
