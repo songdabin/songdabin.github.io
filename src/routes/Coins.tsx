@@ -5,6 +5,8 @@ import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
 import { useSetRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -19,7 +21,9 @@ const Header = styled.header`
   align-items: center;
 `;
 
-const CoinsList = styled.ul``;
+const CoinsList = styled.ul`
+  padding-left: 0;
+`;
 
 const Coin = styled.li`
   background-color: ${(props) => props.theme.cardBgColor};
@@ -43,6 +47,7 @@ const Coin = styled.li`
 const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
   font-size: 48px;
+  font-weight: bold;
 `;
 
 const Loader = styled.div`
@@ -54,6 +59,21 @@ const Img = styled.img`
   width: 35px;
   height: 35px;
   margin-right: 10px;
+`;
+
+const ToggleDiv = styled(motion.div)`
+  width: 65px;
+  height: 35px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+`;
+
+const ToggleBtn = styled(motion.div)`
+  width: 25px;
+  height: 25px;
+  border-radius: 20px;
 `;
 
 interface ICoin {
@@ -70,7 +90,12 @@ interface ICoinsProps {}
 
 function Coins({}: ICoinsProps) {
   const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  const [toggle, setToggle] = useState(false);
+  const handleToggle = () => {
+    setDarkAtom((prev) => !prev);
+    setToggle((toggle) => !toggle);
+  };
+
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   return (
@@ -80,8 +105,29 @@ function Coins({}: ICoinsProps) {
       </Helmet>
       <Header>
         <Title>Coin</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
+        {toggle ? (
+          <ToggleDiv
+            onClick={handleToggle}
+            style={{ backgroundColor: "white", border: "1px solid lightblue" }}
+          >
+            <ToggleBtn
+              layoutId="toggleBtn"
+              style={{ marginLeft: 35, backgroundColor: "lightblue" }}
+            />
+          </ToggleDiv>
+        ) : (
+          <ToggleDiv
+            onClick={handleToggle}
+            style={{ backgroundColor: "lightblue" }}
+          >
+            <ToggleBtn
+              layoutId="toggleBtn"
+              style={{ marginLeft: 5, backgroundColor: "white" }}
+            />
+          </ToggleDiv>
+        )}
       </Header>
+
       {isLoading ? (
         <Loader>Loading ...</Loader>
       ) : (

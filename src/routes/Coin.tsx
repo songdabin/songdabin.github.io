@@ -163,10 +163,6 @@ function Coin({}: ICoinProps) {
   const chartMatch = useRouteMatch("/:coinId/chart");
   const history = useHistory();
 
-  const handleHistory = () => {
-    history.goBack();
-  };
-
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
     () => fetchCoinInfo(coinId)
@@ -188,7 +184,13 @@ function Coin({}: ICoinProps) {
         </title>
       </Helmet>
       <Header>
-        <BackBtn onClick={handleHistory}>{"<"}</BackBtn>
+        <Link
+          to={{
+            pathname: `/`,
+          }}
+        >
+          <BackBtn>{"<"}</BackBtn>
+        </Link>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
           {/*

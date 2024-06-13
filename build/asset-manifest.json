@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/songdabin.github.io/static/js/main.6ce4b608.js",
-    "index.html": "/songdabin.github.io/index.html",
-    "main.6ce4b608.js.map": "/songdabin.github.io/static/js/main.6ce4b608.js.map"
+    "main.js": "/static/js/main.cec68061.js",
+    "index.html": "/index.html",
+    "main.cec68061.js.map": "/static/js/main.cec68061.js.map"
   },
   "entrypoints": [
-    "static/js/main.6ce4b608.js"
+    "static/js/main.cec68061.js"
   ]
 }
