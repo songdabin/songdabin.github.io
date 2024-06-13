@@ -76,6 +76,12 @@ const ToggleBtn = styled(motion.div)`
   border-radius: 20px;
 `;
 
+const Menu = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 3;
+`;
+
 interface ICoin {
   id: string;
   name: string;
@@ -99,12 +105,8 @@ function Coins({}: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 
   return (
-    <Container>
-      <Helmet>
-        <title>Coin</title>
-      </Helmet>
-      <Header>
-        <Title>Coin</Title>
+    <>
+      <Menu>
         {toggle ? (
           <ToggleDiv
             onClick={handleToggle}
@@ -126,30 +128,37 @@ function Coins({}: ICoinsProps) {
             />
           </ToggleDiv>
         )}
-      </Header>
-
-      {isLoading ? (
-        <Loader>Loading ...</Loader>
-      ) : (
-        <CoinsList>
-          {data?.slice(0, 100).map((coin) => (
-            <Coin key={coin.id}>
-              <Link
-                to={{
-                  pathname: `/${coin.id}`,
-                  state: { name: coin.name },
-                }}
-              >
-                <Img
-                  src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
-                />
-                {coin.name} &rarr;
-              </Link>
-            </Coin>
-          ))}
-        </CoinsList>
-      )}
-    </Container>
+      </Menu>
+      <Container>
+        <Helmet>
+          <title>Coin</title>
+        </Helmet>
+        <Header>
+          <Title>Coin</Title>
+        </Header>
+        {isLoading ? (
+          <Loader>Loading ...</Loader>
+        ) : (
+          <CoinsList>
+            {data?.slice(0, 100).map((coin) => (
+              <Coin key={coin.id}>
+                <Link
+                  to={{
+                    pathname: `/${coin.id}`,
+                    state: { name: coin.name },
+                  }}
+                >
+                  <Img
+                    src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
+                  />
+                  {coin.name} &rarr;
+                </Link>
+              </Coin>
+            ))}
+          </CoinsList>
+        )}
+      </Container>
+    </>
   );
 }
 

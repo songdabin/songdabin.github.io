@@ -247,7 +247,7 @@ function Coin({}: ICoinProps) {
             </Route>
           </Switch>
         </>
-      )}{" "}
+      )}
     </Container>
   );
 }
