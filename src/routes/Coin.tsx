@@ -5,7 +5,6 @@ import {
   useLocation,
   useParams,
   useRouteMatch,
-  useHistory,
 } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
@@ -44,7 +43,7 @@ const Loader = styled.div`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(246, 143, 127, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -74,8 +73,9 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
+  font-weight: bold;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(246, 143, 127, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -154,14 +154,11 @@ interface PriceData {
   };
 }
 
-interface ICoinProps {}
-
-function Coin({}: ICoinProps) {
+function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  const history = useHistory();
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],

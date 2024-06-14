@@ -92,9 +92,7 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinsProps {}
-
-function Coins({}: ICoinsProps) {
+function Coins() {
   const setDarkAtom = useSetRecoilState(isDarkAtom);
   const [toggle, setToggle] = useState(false);
   const handleToggle = () => {

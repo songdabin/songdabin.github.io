@@ -26,17 +26,27 @@ function Chart({ coinId }: ChartProps) {
     fetchCoinHistory(coinId)
   );
 
+  const candlestickData = data?.map((price) => ({
+    x: new Date(price.time_close * 1000),
+    y: [
+      parseFloat(price.open),
+      parseFloat(price.high),
+      parseFloat(price.low),
+      parseFloat(price.close),
+    ],
+  }));
+
   return (
     <div>
       {isLoading ? (
         "Loading Chart..."
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "Price",
-              data: data?.map((price) => parseFloat(price.close)) ?? [],
+              data: candlestickData ?? [],
             },
           ]}
           options={{
@@ -50,35 +60,35 @@ function Chart({ coinId }: ChartProps) {
             grid: {
               show: false,
             },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
-            yaxis: {
-              show: false,
-            },
             xaxis: {
+              type: "datetime",
+              labels: {
+                formatter: function (val) {
+                  return new Date(val).toLocaleDateString();
+                },
+                show: false,
+              },
               axisTicks: {
                 show: false,
               },
               axisBorder: {
                 show: false,
               },
-              labels: { show: false },
-              categories: data?.map((value) =>
-                new Date(value.time_close * 1000).toUTCString()
-              ),
-              type: "datetime",
             },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["yellow"], stops: [0, 100] },
+            yaxis: {
+              show: false,
             },
-            colors: ["skyblue"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
+            plotOptions: {
+              candlestick: {
+                colors: {
+                  upward: "#3C90EB",
+                  downward: "lightcoral",
+                },
               },
+            },
+            tooltip: {
+              shared: true,
+              intersect: false,
             },
           }}
         />
