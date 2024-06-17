@@ -142,7 +142,7 @@ function Coins() {
               <Coin key={coin.id}>
                 <Link
                   to={{
-                    pathname: `/${coin.id}`,
+                    pathname: `/coin/${coin.id}`,
                     state: { name: coin.name },
                   }}
                 >
