@@ -3,7 +3,7 @@ import { recoilPersist } from "recoil-persist";
 
 export const isDarkAtom = atom({
   key: "isDark",
-  default: true,
+  default: false,
 });
 
 export interface IToDo {

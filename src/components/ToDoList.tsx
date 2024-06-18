@@ -20,6 +20,7 @@ const Title = styled.h1`
   margin-right: auto;
   font-weight: 200;
   font-size: xx-large;
+  padding: 3vw;
 `;
 
 const CategoryAddBtn = styled(motion.button)`
