@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
 import { useSetRecoilState } from "recoil";
-import { isDarkAtom } from "./atoms";
+import { isDarkAtom } from "../atoms";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -47,7 +47,7 @@ const Coin = styled.li`
 const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
   font-size: 48px;
-  font-weight: bold;
+  font-weight: 400;
 `;
 
 const Loader = styled.div`
@@ -68,6 +68,7 @@ const ToggleDiv = styled(motion.div)`
   display: flex;
   align-items: center;
   margin-left: 10px;
+  margin-top: 1vh;
 `;
 
 const ToggleBtn = styled(motion.div)`

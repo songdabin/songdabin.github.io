@@ -1,10 +1,26 @@
-import React from "react";
-import { useSetRecoilState } from "recoil";
-import { categories, IToDo, toDoState } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { IToDo, categoriesState, toDoState } from "../atoms";
+import styled from "styled-components";
+
+const List = styled.li`
+  padding: 10px;
+`;
+
+const Button = styled.button`
+  background-color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.bgColor};
+  border-radius: 5px;
+  width: 60px;
+  height: 25px;
+  border: 0;
+  margin-left: 10px;
+  font-family: "IBM Plex Sans KR";
+`;
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const categories = useRecoilValue(categoriesState);
+  const changeCategory = (event: React.MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
     } = event;
@@ -19,24 +35,16 @@ function ToDo({ text, category, id }: IToDo) {
     });
   };
   return (
-    <li>
+    <List>
       <span>{text}</span>
-      {category !== categories[0] && (
-        <button name={categories[0]} onClick={onClick}>
-          Doing
-        </button>
-      )}
-      {category !== categories[1] && (
-        <button name={categories[1]} onClick={onClick}>
-          To Do
-        </button>
-      )}
-      {category !== categories[2] && (
-        <button name={categories[2]} onClick={onClick}>
-          Done
-        </button>
-      )}
-    </li>
+      {categories
+        .filter((data) => data !== category)
+        .map((data) => (
+          <Button key={data} name={data} onClick={changeCategory}>
+            {data}
+          </Button>
+        ))}
+    </List>
   );
 }
 
