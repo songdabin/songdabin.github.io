@@ -1,13 +1,24 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import Coins from "./routes/Coins";
 import Coin from "./routes/Coin";
 import ToDoList from "./components/ToDoList";
 import Home from "./routes/Home";
+import Movie from "./routes/Movie";
+import Trello from "./routes/Trello";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
+        <Route path={["/movie", "/movie/movies/:movieId"]} component={Movie} />
+        <Route path="/trello" component={Trello} />
+        <Route path="/todo" component={ToDoList} />
+        <Route path="/coin/:coinId" component={Coin} />
+        <Route path="/coin" component={Coins} />
+        <Route path="/" component={Home} />
+        {/* <Route path={["/movie", "/movie/movies/:movieId"]}>
+          <Movie />
+        </Route>
         <Route path="/todo">
           <ToDoList />
         </Route>
@@ -19,9 +30,9 @@ function Router() {
         </Route>
         <Route path="/">
           <Home />
-        </Route>
+        </Route> */}
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 export default Router;

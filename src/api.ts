@@ -1,17 +1,19 @@
-const BASE_URL = `https://api.coinpaprika.com/v1`;
+const COIN_BASE_URL = `https://api.coinpaprika.com/v1`;
+const API_KEY = "a911dbc58bc57860248c2db02d2c0f39";
+const MOVIE_BASE_PATH = "https://api.themoviedb.org/3/";
 
 export function fetchCoins() {
-  return fetch(`${BASE_URL}/coins`).then((response) => response.json());
+  return fetch(`${COIN_BASE_URL}/coins`).then((response) => response.json());
 }
 
 export function fetchCoinInfo(coinId: string) {
-  return fetch(`${BASE_URL}/coins/${coinId}`).then((response) =>
+  return fetch(`${COIN_BASE_URL}/coins/${coinId}`).then((response) =>
     response.json()
   );
 }
 
 export function fetchCoinTickers(coinId: string) {
-  return fetch(`${BASE_URL}/tickers/${coinId}`).then((response) =>
+  return fetch(`${COIN_BASE_URL}/tickers/${coinId}`).then((response) =>
     response.json()
   );
 }
@@ -21,3 +23,30 @@ export function fetchCoinHistory(coinId: string) {
     `https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}`
   ).then((response) => response.json());
 }
+
+interface IMovie {
+  id: number;
+  backdrop_path: string;
+  poster_path: string;
+  title: string;
+  overview: string;
+}
+
+export interface IGetMoviesResult {
+  dates: {
+    maximum: string;
+    minimum: string;
+  };
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
+export function getMovies() {
+  return fetch(`${MOVIE_BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+// https://api.themoviedb.org/3/search/multi?api_key=a911dbc58bc57860248c2db02d2c0f39&query=%22dune%22

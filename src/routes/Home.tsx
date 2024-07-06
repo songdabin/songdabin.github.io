@@ -55,6 +55,13 @@ export default function Home() {
         >
           <Link to={"/todo"}>Link to To Do </Link>
         </Menu>
+        <Menu
+          initial={{ scale: 0 }}
+          animate={{ scale: 1, transition: { duration: 0.5 } }}
+          whileHover={{ scale: 2 }}
+        >
+          <Link to={"/movie"}>Link to Movie </Link>
+        </Menu>
       </Container>
     </>
   );

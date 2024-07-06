@@ -33,6 +33,25 @@ export const categoryState = atom<string>({
   default: "TO DO",
 });
 
+export interface ITrello {
+  id: number;
+  text: string;
+}
+
+interface IToDoState {
+  [key: string]: ITrello[];
+}
+
+export const trelloState = atom<IToDoState>({
+  key: "trello",
+  default: {
+    "To Do": [],
+    Doing: [],
+    Done: [],
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const toDoState = atom<IToDo[]>({
   key: "toDo",
   default: [],
