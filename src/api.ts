@@ -24,7 +24,7 @@ export function fetchCoinHistory(coinId: string) {
   ).then((response) => response.json());
 }
 
-interface IMovie {
+export interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
@@ -43,8 +43,47 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
+export interface IGetMovieResult {
+  belongs_to_collection: any;
+  budget: number;
+  homepage: string;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  revenue: number;
+  runtime: number;
+  status: string;
+  tagline: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
 export function getMovies() {
   return fetch(`${MOVIE_BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getMovie(id: string) {
+  return fetch(`${MOVIE_BASE_PATH}/movie/${id}?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getUpcoming() {
+  return fetch(`${MOVIE_BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTop() {
+  return fetch(`${MOVIE_BASE_PATH}/movie/top_rated?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }

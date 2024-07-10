@@ -1,14 +1,24 @@
-import { AnimatePresence, motion, useScroll } from "framer-motion";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import useWindowDimensions from "./useWindowDimensions";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import styled from "styled-components";
 import { IGetMoviesResult } from "../../api";
+import { useQuery } from "react-query";
 import { makeImagePath } from "../../utils";
+import { useHistory } from "react-router-dom";
+import useWindowDimensions from "./useWindowDimensions";
+import SliderOverlay from "./SliderOverlay";
 
 const Slider = styled.div`
   position: relative;
   top: -100px;
+  margin-bottom: 30vh;
+`;
+
+const SliderTitle = styled.p`
+  color: white;
+  font-size: 20px;
+  padding: 0 20px;
+  cursor: pointer;
 `;
 
 const Row = styled(motion.div)`
@@ -51,59 +61,6 @@ const Info = styled(motion.div)`
   }
 `;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-
-const BigMovie = styled(motion.div)`
-  position: absolute;
-  width: 40vw;
-  height: 80vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: #2f2f2f;
-`;
-
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-`;
-
-const BigTitle = styled.h3`
-  color: white;
-  padding: 0 20px;
-  font-size: 36px;
-  position: relative;
-  top: -60px;
-  font-weight: 500;
-`;
-
-const BigOverview = styled.p`
-  padding: 0 30px;
-  position: relative;
-  top: -60px;
-  color: white;
-  font-size: 20px;
-  overflow: scroll;
-`;
-
-const SliderTitle = styled.p`
-  color: white;
-  font-size: 20px;
-  padding: 0 20px;
-  cursor: pointer;
-`;
-
 const BoxVariants = {
   normal: {
     scale: 1,
@@ -130,33 +87,22 @@ const InfoVariants = {
   },
 };
 
-export default function MovieSlider({
-  offset,
-  data,
-  category,
-}: {
+interface IProps {
   offset: number;
-  data?: IGetMoviesResult;
+  api: () => Promise<IGetMoviesResult>;
   category: string;
-}) {
+}
+
+export default function SliderRow({ offset, api, category }: IProps) {
+  const { data, isLoading } = useQuery<IGetMoviesResult>(
+    ["movie", category],
+    api
+  );
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const history = useHistory();
-  const bigMovieMatch = useRouteMatch<{ movieId: string }>(
-    "/movie/movies/:movieId"
-  );
-  const { scrollY } = useScroll();
   const width = useWindowDimensions();
 
-  const onBoxCLicked = (movieId: number) => {
-    history.push(`/movie/movies/${movieId}`);
-  };
-  const onOverlayClicked = () => history.goBack();
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => String(movie.id) === bigMovieMatch.params.movieId
-    );
   const increaseIndex = () => {
     if (data) {
       if (leaving) return;
@@ -168,6 +114,15 @@ export default function MovieSlider({
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const onBoxCLicked = (movieId: number) => {
+    history.push(`/movie/movies/${movieId}`);
+  };
+
+  // const clickedMovie =
+  //   bigMovieMatch?.params.movieId &&
+  //   data?.results.find(
+  //     (movie) => String(movie.id) === bigMovieMatch.params.movieId
+  //   );
 
   return (
     <>
@@ -203,36 +158,7 @@ export default function MovieSlider({
           </Row>
         </AnimatePresence>
       </Slider>
-      <AnimatePresence>
-        {bigMovieMatch ? (
-          <>
-            <Overlay
-              onClick={onOverlayClicked}
-              exit={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            />
-            <BigMovie
-              style={{ top: scrollY.get() + 90 }}
-              layoutId={bigMovieMatch.params.movieId}
-            >
-              {clickedMovie && (
-                <>
-                  <BigCover
-                    style={{
-                      backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                        clickedMovie.backdrop_path,
-                        "w500"
-                      )})`,
-                    }}
-                  />
-                  <BigTitle>{clickedMovie.title}</BigTitle>
-                  <BigOverview>{clickedMovie.overview}</BigOverview>
-                </>
-              )}
-            </BigMovie>
-          </>
-        ) : null}
-      </AnimatePresence>
+      <SliderOverlay />
     </>
   );
 }

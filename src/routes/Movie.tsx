@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
-import { IGetMoviesResult, getMovies } from "../api";
+import { IGetMoviesResult, getMovies, getUpcoming, getTop } from "../api";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { makeImagePath } from "../utils";
 import Header from "../components/Movie/Header";
-import MovieSlider from "../components/Movie/MovieSlider";
+import SliderRow from "../components/Movie/SliderRow";
 
 const Wrapper = styled(motion.div)`
   background-color: black;
@@ -44,7 +44,7 @@ const offset = 6;
 
 function Movie() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
+    ["movies", "Banner"],
     getMovies
   );
 
@@ -62,7 +62,18 @@ function Movie() {
               <Title>{data?.results[0].title}</Title>
               <Overview>{data?.results[0].overview}</Overview>
             </Banner>
-            <MovieSlider category="Now Playing" offset={offset} data={data} />
+
+            <SliderRow
+              offset={offset}
+              api={getMovies}
+              category={"Now Playing"}
+            />
+            <SliderRow offset={offset} api={getTop} category={"Top Rates"} />
+            <SliderRow
+              offset={offset}
+              api={getUpcoming}
+              category={"Upcoming"}
+            />
           </>
         )}
       </Wrapper>
