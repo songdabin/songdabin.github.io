@@ -22,7 +22,7 @@ const BigMovie = styled(motion.div)`
   right: 0;
   margin: 0 auto;
   border-radius: 15px;
-  overflow: hidden;
+  overflow: scroll;
   background-color: #2f2f2f;
 `;
 
@@ -43,6 +43,15 @@ const BigTitle = styled.h3`
 `;
 
 const BigOverview = styled.p`
+  padding: 0 30px;
+  position: relative;
+  top: -60px;
+  color: white;
+  font-size: 20px;
+  overflow: scroll;
+`;
+
+const BigInfo = styled.p`
   padding: 0 30px;
   position: relative;
   top: -60px;
@@ -88,8 +97,17 @@ export default function SliderOverlay({ animateId }: { animateId: string }) {
                     )})`,
                   }}
                 />
-                <BigTitle>{data?.title}</BigTitle>
+                <BigTitle>
+                  <a target="_blank" href={data?.homepage + ""}>
+                    {data?.title + " 🔗"}
+                  </a>
+                </BigTitle>
                 <BigOverview>{data?.overview}</BigOverview>
+                <BigInfo>
+                  Release Date {data?.release_date}
+                  <br />
+                  Runtime {data?.runtime} M
+                </BigInfo>
               </>
             </BigMovie>
           </>

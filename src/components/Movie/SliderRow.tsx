@@ -12,6 +12,9 @@ const Slider = styled.div`
   position: relative;
   top: -100px;
   margin-bottom: 30vh;
+  &:last-child {
+    margin-bottom: 0vh;
+  }
 `;
 
 const SliderTitle = styled.p`
