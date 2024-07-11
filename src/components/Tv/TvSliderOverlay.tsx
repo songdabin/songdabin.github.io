@@ -1,9 +1,10 @@
 import { useQuery } from "react-query";
-import { getMovie, IGetMovieResult } from "../../api";
+import { getMovie, getTv, IGetMovieResult, IGetTvResult } from "../../api";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import styled from "styled-components";
 import { makeImagePath } from "../../utils";
+import { useEffect } from "react";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -60,24 +61,26 @@ const BigInfo = styled.p`
   overflow: scroll;
 `;
 
-export default function SliderOverlay({ animateId }: { animateId: string }) {
+export default function TvSliderOverlay({ animateId }: { animateId: string }) {
   const { scrollY } = useScroll();
   const history = useHistory();
 
-  const bigMovieMatch = useRouteMatch<{ movieId: string }>(
-    "/movie/movies/:movieId"
+  const bigTvMatch = useRouteMatch<{ tvId: string }>("/movie/tv/tvs/:tvId");
+  const { data, isLoading } = useQuery<IGetTvResult>(
+    ["movie", bigTvMatch?.params.tvId],
+    () => getTv(bigTvMatch?.params.tvId + "")
   );
-  const { data, isLoading } = useQuery<IGetMovieResult>(
-    ["movie", bigMovieMatch?.params.movieId],
-    () => getMovie(bigMovieMatch?.params.movieId + "")
-  );
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const onOverlayClicked = () => history.goBack();
 
   return (
     <>
       <AnimatePresence>
-        {bigMovieMatch ? (
+        {bigTvMatch ? (
           <>
             <Overlay
               onClick={onOverlayClicked}
@@ -86,7 +89,7 @@ export default function SliderOverlay({ animateId }: { animateId: string }) {
             />
             <BigMovie
               style={{ top: scrollY.get() + 90 }}
-              layoutId={bigMovieMatch.params.movieId + animateId}
+              layoutId={bigTvMatch.params.tvId + animateId}
             >
               <>
                 <BigCover
@@ -97,12 +100,12 @@ export default function SliderOverlay({ animateId }: { animateId: string }) {
                     )})`,
                   }}
                 />
-                <BigTitle>{data?.title}</BigTitle>
+                <BigTitle>{data?.name}</BigTitle>
                 <BigOverview>{data?.overview}</BigOverview>
                 <BigInfo>
-                  Release Date {data?.release_date}
+                  Number of Seasons {data?.number_of_seasons}
                   <br />
-                  Runtime {data?.runtime} M
+                  Number of Episodes {data?.number_of_episodes}
                 </BigInfo>
               </>
             </BigMovie>
