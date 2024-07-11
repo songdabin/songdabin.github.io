@@ -88,4 +88,10 @@ export function getTop() {
   );
 }
 
+export function getSearch(keyword: string) {
+  return fetch(
+    `${MOVIE_BASE_PATH}/search/multi?api_key=${API_KEY}&query='${keyword}'`
+  ).then((response) => response.json());
+}
+
 // https://api.themoviedb.org/3/search/multi?api_key=a911dbc58bc57860248c2db02d2c0f39&query=%22dune%22

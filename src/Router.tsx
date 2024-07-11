@@ -5,11 +5,15 @@ import ToDoList from "./components/ToDoList";
 import Home from "./routes/Home";
 import Movie from "./routes/Movie";
 import Trello from "./routes/Trello";
+import Tv from "./routes/Tv";
+import Search from "./routes/Search";
 
 function Router() {
   return (
     <HashRouter>
       <Switch>
+        <Route path="/movie/search" component={Search} />
+        <Route path="/movie/tv" component={Tv} />
         <Route path={["/movie", "/movie/movies/:movieId"]} component={Movie} />
         <Route path="/trello" component={Trello} />
         <Route path="/todo" component={ToDoList} />
