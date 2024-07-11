@@ -88,12 +88,18 @@ const InfoVariants = {
 };
 
 interface IProps {
+  animateId: string;
   offset: number;
   api: () => Promise<IGetMoviesResult>;
   category: string;
 }
 
-export default function SliderRow({ offset, api, category }: IProps) {
+export default function SliderRow({
+  animateId,
+  offset,
+  api,
+  category,
+}: IProps) {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movie", category],
     api
@@ -141,7 +147,7 @@ export default function SliderRow({ offset, api, category }: IProps) {
               .slice(offset * index, offset * index + offset)
               .map((movie) => (
                 <Box
-                  layoutId={movie.id + ""}
+                  layoutId={movie.id + animateId}
                   key={movie.id}
                   variants={BoxVariants}
                   whileHover="hover"
@@ -158,7 +164,7 @@ export default function SliderRow({ offset, api, category }: IProps) {
           </Row>
         </AnimatePresence>
       </Slider>
-      <SliderOverlay />
+      <SliderOverlay animateId={animateId} />
     </>
   );
 }

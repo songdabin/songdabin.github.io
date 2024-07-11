@@ -51,7 +51,7 @@ const BigOverview = styled.p`
   overflow: scroll;
 `;
 
-export default function SliderOverlay() {
+export default function SliderOverlay({ animateId }: { animateId: string }) {
   const { scrollY } = useScroll();
   const history = useHistory();
 
@@ -77,7 +77,7 @@ export default function SliderOverlay() {
             />
             <BigMovie
               style={{ top: scrollY.get() + 90 }}
-              layoutId={bigMovieMatch.params.movieId}
+              layoutId={bigMovieMatch.params.movieId + animateId}
             >
               <>
                 <BigCover

@@ -64,12 +64,19 @@ function Movie() {
             </Banner>
 
             <SliderRow
+              animateId={"np"}
               offset={offset}
               api={getMovies}
               category={"Now Playing"}
             />
-            <SliderRow offset={offset} api={getTop} category={"Top Rates"} />
             <SliderRow
+              animateId={"tr"}
+              offset={offset}
+              api={getTop}
+              category={"Top Rates"}
+            />
+            <SliderRow
+              animateId={"u"}
               offset={offset}
               api={getUpcoming}
               category={"Upcoming"}
